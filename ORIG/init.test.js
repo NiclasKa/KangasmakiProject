@@ -10,4 +10,7 @@ describe('setup-test', () => {
   test('3 equals 3', () => {
     expect(3).toBe(3);
   })
+  test('5 equals 5', () => {
+    expect(5).toBe(5);
+  })
 })
