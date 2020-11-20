@@ -4,15 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "RabbitMQ"
+=======
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "DevOpsProject"
+>>>>>>> 1bc37294370f6a6d8eaee3376634849d5330ecef
   },
   "author": "niclas.kangasmaki@tuni.fi",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "amqplib": "^0.6.0"
+=======
+    "amqplib": "^0.6.0",
+    "jest": "^26.6.3"
+>>>>>>> 1bc37294370f6a6d8eaee3376634849d5330ecef
   }
 }
