@@ -41,10 +41,7 @@ function connect() {
                channel.bindQueue(q.queue, exchange, "my.o");
          
                channel.consume(q.queue, function(msg) {
-<<<<<<< HEAD
-=======
                   console.log(`Got message ${msg.content.toString()}`)
->>>>>>> 1bc37294370f6a6d8eaee3376634849d5330ecef
                   const date = new Date().toISOString();
                   const write = `${date} Topic ${msg.fields.routingKey}: ${msg.content.toString()} `;
                   fs.appendFile('../obse/logs.txt', write, function (err) {
@@ -58,9 +55,6 @@ function connect() {
       }
    });
 }
+
 // Wait RabbitMQ server to be up
-<<<<<<< HEAD
-setTimeout(connect, 15000);
-=======
 setTimeout(connect, 20000);
->>>>>>> 1bc37294370f6a6d8eaee3376634849d5330ecef

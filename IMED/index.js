@@ -14,7 +14,7 @@ function tryAgain() {
 function connect() {
    amqp.connect('amqp://guest:guest@rabbitmq3:5672', function(error0, connection) {
       if (error0) {
-         console.log("Error connecting, trying again in 2 seconds");
+         console.log("Error connecting, trying again in two seconds");
          tryAgain();
       } else {
          connection.createChannel(function(error1, channel) {
