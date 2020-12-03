@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-let requests = [`TroubleShoot started at ${Date.now()}`];
+const date = new Date();
+let requests = [`TroubleShoot started at ${date.toISOString().split('T')[0]}`];
 
 /* GET troubleshooting info. */
 router.get('/', function(req, res, next) {
@@ -9,7 +10,8 @@ router.get('/', function(req, res, next) {
 });
 /* PUT troubleshooting info. */
 router.put('/', function(req, res, next) {
-  requests.push(req.body.request);
+  console.log(req.body);
+  requests.push(req.body);
   res.json({request: req.body});
 });
 

@@ -35,6 +35,7 @@ app.use(function(err, req, res, next) {
   res.json({error: err});
 });
 
+
 // Every 3 seconds, check if the state has been set to shutdown and work accordingly.
 const getShutdownMessage = async() => {
   try {
