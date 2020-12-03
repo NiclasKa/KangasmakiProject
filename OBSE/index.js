@@ -1,8 +1,16 @@
 const amqp = require('amqplib/callback_api');
 const fs = require('fs');
+const axios = require('axios');
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const port = 3000;
+
+app.use(cors());
+app.listen(port);
 
 let counter = 0;
-let maxTries = 4;
+let maxTries = 6;
 
 function tryAgain() {
    if (counter < maxTries) {
@@ -40,13 +48,29 @@ function connect() {
                channel.bindQueue(q.queue, exchange, "my.i");
                channel.bindQueue(q.queue, exchange, "my.o");
          
-               channel.consume(q.queue, function(msg) {
+               channel.consume(q.queue, async function(msg) {
                   console.log(`Got message ${msg.content.toString()}`)
                   const date = new Date().toISOString();
-                  const write = `${date} Topic ${msg.fields.routingKey}: ${msg.content.toString()} `;
-                  fs.appendFile('../obse/logs.txt', write, function (err) {
-                     if (err) throw err;
-                  }); 
+                  
+                  if (msg.content.toString() === "INIT") {
+                     // Clear the log and set state to RUNNING
+                     fs.appendFile('../obse/logs.txt', "", function (err) {
+                        if (err) throw err;
+                     });
+                     await axios.put('http://api:8081/state', {state: "RUNNING"}).catch(e => {console.log(e)});;
+                  } else if (msg.content.toString() === "SHUTDOWN") {
+                     // Shutdown
+                     setTimeout(function() {
+                        connection.close();
+                        process.exit(0);
+                     }, 1000);
+                  } else {
+                     const write = `${date} Topic ${msg.fields.routingKey}: ${msg.content.toString()} `;
+                     fs.appendFile('../obse/logs.txt', write, function (err) {
+                        if (err) throw err;
+                     });
+                  }
+
                }, {
                  noAck: true
                });
@@ -57,4 +81,4 @@ function connect() {
 }
 
 // Wait RabbitMQ server to be up
-setTimeout(connect, 20000);
+setTimeout(connect, 22000);
