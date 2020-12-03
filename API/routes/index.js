@@ -2,15 +2,13 @@ var express = require('express');
 var router = express.Router();
 const axios = require('axios');
 
-const httpservUrl = 'Localhost:8080/';
-
 let currentState = { state: 'RUNNING' }
 const dateAtStart = new Date()
 let run_log = [`${dateAtStart}: RUNNING`]
 
 /* GET home page. */
 router.get('/messages', (req, res, next) => {
-  axios.get('http://localhost:8080/')
+  axios.get('http://httpserv:8080/')
   .then(function (response) {
     res.json(response.data);
   }).catch(e => {throw e})
@@ -25,7 +23,6 @@ router.put('/state', (req, res, next) => {
   const givenState = req.body.state
 
   if (givenState === currentState.state) {
-    res.status(400).json(`State is already set to ${givenState}`)
     return;
   }
 
@@ -35,6 +32,12 @@ router.put('/state', (req, res, next) => {
     const log = [`${date}: ${givenState}`] 
     run_log = run_log.concat(log)
     res.json(currentState)
+    if(currentState.state === 'SHUTDOWN') {
+      setTimeout(function() {
+        process.exit(0);
+     }, 2000);
+    }
+    return;
   }
   res.status(400).json('Invalid state value')
 })

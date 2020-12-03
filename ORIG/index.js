@@ -45,7 +45,8 @@ function connect() {
                   channel.publish(exchange, key, Buffer.from(`MSG_${messageCount++}`));
                }
 
-               let state = await axios.get('http://localhost:8081/state').then((res) => { return res.state }).catch(e => {console.log(e)});
+               let state = await axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {console.log(e)});
+               console.log('state:', state)
                if (!state) state = "PAUSED";
 
                if (state === "RUNNING") sendMessage();
@@ -54,6 +55,7 @@ function connect() {
                }
                else if (state === "INIT") {
                   channel.publish(exchange, key, Buffer.from(`INIT`));
+                  messageCount = 0
                }
                else if (state === "SHUTDOWN") {
                   channel.publish(exchange, key, Buffer.from(`SHUTDOWN`));
