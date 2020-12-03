@@ -2,4 +2,5 @@
 by Kangasmaki & Kangasmaki
 
 #Running tests
-To run tests, go to api folder and run "npm run test"
+To run tests, first you need to run the docker containers in background using docker-compose up --build --d
+After that, go to API folder and run npm run test
