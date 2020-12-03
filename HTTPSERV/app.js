@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
 });
 
 try {
-  const state = await axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {console.log(e)});
+  const state = axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {console.log(e)});
   if(state === 'SHUTDOWN') {
     setTimeout(function() {
       process.exit(0);
