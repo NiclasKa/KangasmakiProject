@@ -24,15 +24,22 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+// Every 3 seconds, check if the state has been set to shutdown and work accordingly.
 try {
-  const state = await axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {console.log(e)});
-  if(state === 'SHUTDOWN') {
-    setTimeout(function() {
-      process.exit(0);
-   }, 2000);
+  while (true) {
+    const getState = async() => {
+      const state = await axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {console.log(e)});
+      if(state === 'SHUTDOWN') {
+        setTimeout(function() {
+          process.exit(0);
+        }, 2000);
+      }
+    }
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    getState();
   }
-} catch {
-  console.log('whats uuuuppp')
+} catch (e) {
+  console.log(e);
 }
 
 // error handler
