@@ -35,6 +35,12 @@ app.use(function(err, req, res, next) {
   res.json({error: err});
 });
 
+const troubleshoot = async(data) => {
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  await axios.put('http://troubleshoot:8082/', {data: data}).catch(e => {console.log(e)});
+}
+troubleshoot(`HTTPSERV started`);
+
 // Every 3 seconds, check if the state has been set to shutdown and work accordingly.
 const getShutdownMessage = async() => {
   try {

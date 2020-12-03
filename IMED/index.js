@@ -11,16 +11,25 @@ function tryAgain() {
    }
 }
 
+const troubleshoot = async(data) => {
+   await new Promise(resolve => setTimeout(resolve, 1000));
+   await axios.put('http://troubleshoot:8082/', {data: data}).catch(e => {console.log(e)});
+}
+troubleshoot(`IMED started, waiting for connection to RabbitMQ server...`);
+
 function connect() {
    amqp.connect('amqp://guest:guest@rabbitmq3:5672', function(error0, connection) {
       if (error0) {
          console.log("Error connecting, trying again in two seconds");
+         troubleshoot("IMED: Error connecting to RabbitMQ, trying again in two seconds");
          tryAgain();
       } else {
          connection.createChannel(function(error1, channel) {
             if (error1) {
                   throw error1;
             }
+
+            troubleshoot("IMED connected to RabbitMQ server!");
    
             const exchange = 'topic_logs';
    
