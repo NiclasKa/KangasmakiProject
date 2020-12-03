@@ -2,7 +2,7 @@ const amqp = require('amqplib/callback_api');
 const fs = require('fs');
 
 let counter = 0;
-let maxTries = 4;
+let maxTries = 6;
 
 function tryAgain() {
    if (counter < maxTries) {
@@ -36,9 +36,22 @@ function connect() {
                channel.bindQueue(q.queue, exchange, "my.o");
          
                channel.consume(q.queue, async function(msg) {
-                  console.log(`Got message ${msg.content.toString()}`)
+                  console.log(`Got message ${msg.content.toString()}`);
                   await new Promise(resolve => setTimeout(resolve, 1000));
-                  channel.publish(exchange, "my.i", Buffer.from(`Got ${msg.content.toString()}`));
+
+                  if (msg.content.toString() === "INIT") {
+                     // Pass the message forward, since the log is saved in OBSERVER
+                     channel.publish(exchange, "my.i", Buffer.from("INIT"));
+                  } else if (msg.content.toString() === "SHUTDOWN") {
+                     // Pass the message and shutdown
+                     channel.publish(exchange, "my.i", Buffer.from("SHUTDOWN"));
+                     setTimeout(function() {
+                        connection.close();
+                        process.exit(0);
+                     }, 2000);
+                  } else {
+                     channel.publish(exchange, "my.i", Buffer.from(`Got ${msg.content.toString()}`));
+                  }
                }, {
                  noAck: true
                });
@@ -49,4 +62,4 @@ function connect() {
 }
 
 // Wait RabbitMQ server to be up
-setTimeout(connect, 20000);
+setTimeout(connect, 22000);
