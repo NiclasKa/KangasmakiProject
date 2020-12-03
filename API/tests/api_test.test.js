@@ -7,7 +7,7 @@ const axios = require('axios');
 
 it('get messages', async done => {
    const messages = await request.get('/messages');
-   const messagesFromApi = await axios.get('http://localhost:8080/')
+   const messagesFromApi = await axios.get('http://httpserv:8080/')
 
    expect(messages.status).toBe(200);
    expect(messages.body.data).toBe(messagesFromApi.data.data);

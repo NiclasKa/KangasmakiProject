@@ -9,6 +9,7 @@ services:
     depends_on:
       - obse
       - rabbitmq3
+      - troubleshoot
 
   imed:
     build: ./IMED
@@ -18,6 +19,7 @@ services:
       - obse
       - orig
       - rabbitmq3
+      - troubleshoot
 
   obse:
     build: ./OBSE
@@ -27,6 +29,7 @@ services:
       - 0:3000
     depends_on:
       - rabbitmq3
+      - troubleshoot
 
   rabbitmq3:
     image: rabbitmq:3-management
@@ -42,8 +45,16 @@ services:
     depends_on:
       - rabbitmq3
       - obse
+      - troubleshoot
 
   api:
     build: ./API
     ports:
       - 8081:8081
+    depends_on:
+      - troubleshoot
+
+  troubleshoot:
+    build: ./TROUBLESHOOT
+    ports:
+      - 8082:8082
