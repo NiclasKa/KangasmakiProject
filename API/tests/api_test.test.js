@@ -1,15 +1,16 @@
 const app = require('../app') // Link to your server file
 const supertest = require('supertest')
 const request = supertest(app)
+const axios = require('axios');
 
 // TODO: put state and get messages from httpserv and compare them with received messages
 
 it('get messages', async done => {
-   const messages = await request.get('/messages');
+   const messages = await axios.get('http://localhost:8080/');
 
    // The status must be 200 and the messages should at least display the first message received by the api (orig -> obse -> httpserv -> api)
    expect(messages.status).toBe(200);
-   expect(messages.body.data.includes("Topic my.o: MSG_0")).toBe(true);
+   expect(messages.data.data.includes("Topic my.o: MSG_0")).toBe(true);
    done();
  });
 
