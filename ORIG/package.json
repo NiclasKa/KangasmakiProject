@@ -10,7 +10,6 @@
     "type": "git",
     "url": "DevOpsProject"
   },
-  "author": "niclas.kangasmaki@tuni.fi",
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.6.0",
