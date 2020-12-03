@@ -24,25 +24,6 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// Every 3 seconds, check if the state has been set to shutdown and work accordingly.
-try {
-  while (true) {
-    const getState = async() => {
-      const state = await axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {console.log(e)});
-      if(state === 'SHUTDOWN') {
-        setTimeout(function() {
-          process.exit(0);
-        }, 2000);
-      }
-    }
-    setTimeout(function() {
-      getState();
-   }, 3000);
-  }
-} catch (e) {
-  console.log(e);
-}
-
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -54,5 +35,20 @@ app.use(function(err, req, res, next) {
   res.json({error: err});
 });
 
+// Every 3 seconds, check if the state has been set to shutdown and work accordingly.
+const getShutdownMessage = async() => {
+  try {
+    while (true) {
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      const state = axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {throw e});
+      if(state === 'SHUTDOWN') {
+        process.exit(0);
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+getShutdownMessage();
 
 module.exports = app;

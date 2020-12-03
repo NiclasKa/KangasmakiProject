@@ -22,7 +22,7 @@ const troubleshoot = async(data) => {
    await new Promise(resolve => setTimeout(resolve, 1000));
    await axios.put('http://troubleshoot:8082/', {data: data}).catch(e => {console.log(e)});
 }
-troubleshoot("ORIG started, waiting for connection to RabbitMQ server...");
+//troubleshoot("ORIG started, waiting for connection to RabbitMQ server...");
 
 function connect() {
    amqp.connect('amqp://guest:guest@rabbitmq3:5672', function(error0, connection) {
@@ -33,7 +33,7 @@ function connect() {
          connection.createChannel(async function(error1, channel) {
             if (error1) throw error1;
 
-            troubleshoot("ORIG connected to RabbitMQ server!");
+            //troubleshoot("ORIG connected to RabbitMQ server!");
 
             const exchange = "topic_logs";
             const key = "my.o";
