@@ -54,7 +54,7 @@ function connect() {
                   
                   if (msg.content.toString() === "INIT") {
                      // Clear the log and set state to RUNNING
-                     fs.appendFile('../obse/logs.txt', "", function (err) {
+                     fs.writeFile('../obse/logs.txt', "", function (err) {
                         if (err) throw err;
                      });
                      await axios.put('http://api:8081/state', {state: "RUNNING"}).catch(e => {console.log(e)});;

@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var axios = require('axios')
 
 var indexRouter = require('./routes/index');
 
@@ -23,6 +24,17 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+try {
+  const state = await axios.get('http://api:8081/state').then((res) => { return res.data.state }).catch(e => {console.log(e)});
+  if(state === 'SHUTDOWN') {
+    setTimeout(function() {
+      process.exit(0);
+   }, 2000);
+  }
+} catch {
+  console.log('whats uuuuppp')
+}
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -33,5 +45,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.json({error: err});
 });
+
 
 module.exports = app;
