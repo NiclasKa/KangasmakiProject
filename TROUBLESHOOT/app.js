@@ -37,7 +37,7 @@ try {
     }
     setTimeout(function() {
       getState();
-   }, 3000);
+    }, 3000);
   }
 } catch (e) {
   console.log(e);

@@ -1,5 +1,5 @@
 #DevOps project work
+by Kangasmaki & Kangasmaki
 
-Yhteinen repository
-
-Pull req test
+#Running tests
+To run tests, go to api folder and run "npm run test"
